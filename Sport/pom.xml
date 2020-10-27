@@ -5,7 +5,7 @@
     <artifactId>HMS</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>HMS-1.0</name>
+    <name>Sport-1.0</name>
     
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
