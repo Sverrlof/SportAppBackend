@@ -5,11 +5,64 @@
  */
 package com.mycompany.sport.service;
 
+import com.mycompany.sport.auth.User;
+import static com.mycompany.sport.service.Event.FIND_ALL_EVENTS;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+//if util.date doesnt work try sql.Date instead? @TODO remove this if it works.
+import javax.json.bind.annotation.JsonbTypeAdapter;
+import javax.persistence.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  *
- * @author sigur
+ * @author sigurd
  */
-public class Event {
+@Table(name = "Event")
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@NamedQuery(name = FIND_ALL_EVENTS,
+        query = "select e from Event e")
+
+public class Event implements Serializable {
+    public static final String FIND_ALL_EVENTS = "Event.findAllEvents";
+    
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long eventID;
+    
+    private String event;
+    private String description;
+    private String category;
+    private Date date;
+    private String location;
+    private String time;
     
     
+    
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private User eventCreator;
+    
+    
+    private List<User> eventAttenders;
+    
+    public void addAttender(User user){
+        if(eventAttenders == null){
+            eventAttenders = new ArrayList<User>();
+        }
+        eventAttenders.add(user);
+    }
+    public void removeAttender(User user){
+        if(user != null) {
+            eventAttenders.remove(user);
+        }
+    }
 }

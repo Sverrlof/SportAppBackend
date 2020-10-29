@@ -28,8 +28,9 @@ import javax.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import static com.mycompany.fant.auth.User.FIND_ALL_USERS;
-import static com.mycompany.fant.auth.User.FIND_USER_BY_IDS;
+import static com.mycompany.sport.auth.User.FIND_ALL_USERS;
+import static com.mycompany.sport.auth.User.FIND_USER_BY_IDS;
+import com.mycompany.sport.service.Event;
 import javax.validation.constraints.Email;
 
 
@@ -77,6 +78,7 @@ public class User implements Serializable {
     String phoneNumber;
     @Email
     String email;
+    List<Event> myEvents;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "auser_properties", joinColumns=@JoinColumn(name="userid"))
@@ -94,5 +96,16 @@ public class User implements Serializable {
             groups = new ArrayList<>();
         }
         return groups;
+    }
+    
+    public void addEvent(Event event) {
+        if(myEvents == null) {
+            myEvents = new ArrayList<Event>();
+        }
+        myEvents.add(event);
+    }
+    public void removeEvent(Event event) {
+        if(event != null)
+        myEvents.remove(event);
     }
 }

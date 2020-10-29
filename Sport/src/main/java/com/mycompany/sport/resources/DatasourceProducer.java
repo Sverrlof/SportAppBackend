@@ -5,7 +5,7 @@ import javax.annotation.sql.DataSourceDefinition;
 import javax.ejb.Singleton;
 import javax.enterprise.inject.Produces;
 import javax.sql.DataSource;
-import static com.mycompany.fant.resources.DatasourceProducer.JNDI_NAME;
+import static com.mycompany.sport.resources.DatasourceProducer.JNDI_NAME;
 
 
 /**
@@ -16,7 +16,7 @@ import static com.mycompany.fant.resources.DatasourceProducer.JNDI_NAME;
 @DataSourceDefinition(
     name = JNDI_NAME,
     className = "org.h2.jdbcx.JdbcDataSource",
-    url = "jdbc:h2:~/fantdb.db")
+    url = "jdbc:h2:~/sportdb.db")
 public class DatasourceProducer {
     public static final String JNDI_NAME =  "java:app/jdbc/default";
 
