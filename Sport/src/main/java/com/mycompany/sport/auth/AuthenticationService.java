@@ -38,7 +38,7 @@ import io.jsonwebtoken.security.InvalidKeyException;
 import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
-import com.mycompany.fant.resources.DatasourceProducer;
+import com.mycompany.sport.resources.DatasourceProducer;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import static org.eclipse.microprofile.jwt.Claims.email;
@@ -108,7 +108,7 @@ public class AuthenticationService {
      * @param request
      * @return
      */
-    @GET
+    @POST
     @Path("login")
     public Response login(
             @QueryParam("uid") @NotBlank String uid,
