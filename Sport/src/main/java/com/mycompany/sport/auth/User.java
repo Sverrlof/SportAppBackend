@@ -28,8 +28,8 @@ import javax.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import static com.mycompany.fant.auth.User.FIND_ALL_USERS;
-import static com.mycompany.fant.auth.User.FIND_USER_BY_IDS;
+import static com.mycompany.sport.auth.User.FIND_ALL_USERS;
+import static com.mycompany.sport.auth.User.FIND_USER_BY_IDS;
 import javax.validation.constraints.Email;
 
 
