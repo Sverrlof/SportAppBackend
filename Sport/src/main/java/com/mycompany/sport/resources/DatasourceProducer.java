@@ -15,10 +15,10 @@ import static com.mycompany.sport.resources.DatasourceProducer.JNDI_NAME;
 @Singleton
 @DataSourceDefinition(
     name = JNDI_NAME,
-    className = "org.h2.jdbcx.JdbcDataSource",
-    url = "jdbc:h2:~/sportdb.db")
+    className = "org.postgresql.xa.PGXADataSource",
+    url = "jdbc:postgresql://localhost:5432/postgres")
 public class DatasourceProducer {
-    public static final String JNDI_NAME =  "java:app/jdbc/default";
+    public static final String JNDI_NAME =  "jdbc/postgres";
 
     @Resource(lookup=JNDI_NAME)
     DataSource ds;
