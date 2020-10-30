@@ -105,7 +105,8 @@ public class User implements Serializable {
         myEvents.add(event);
     }
     public void removeEvent(Event event) {
-        if(event != null)
+        if(event != null){
         myEvents.remove(event);
     }
+}
 }

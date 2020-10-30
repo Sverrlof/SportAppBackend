@@ -88,6 +88,7 @@ public class SportService {
      * A path where new events can be added and stored in the database
      * 
      */
+    /**
     @POST
     @Path("add")
     @RolesAllowed({Group.USER})
@@ -113,13 +114,14 @@ public class SportService {
         
         em.persist(newEvent);
         return Response.ok().build();
-    }
+    }*/
     /**
      * A path for users to sign up to an event. When signed up it will add the event to myeventlist
      * and add him/her-self to the attendee list
      * @param eventid
      * @return 
      */
+    /**
     @PUT
     @Path("joinevent")
     @RolesAllowed({Group.USER})
@@ -133,7 +135,7 @@ public class SportService {
             return Response.ok().build();
         }
         return Response.notModified().build();
-    }
+    }*/
     
     @DELETE
     @Path("remove")
