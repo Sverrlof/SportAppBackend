@@ -111,8 +111,8 @@ public class AuthenticationService {
     @POST
     @Path("login")
     public Response login(
-            @QueryParam("uid") @NotBlank String uid,
-            @QueryParam("pwd") @NotBlank String pwd,
+            @FormParam("uid") @NotBlank String uid,
+            @FormParam("pwd") @NotBlank String pwd,
             @Context HttpServletRequest request) {
         CredentialValidationResult result = identityStoreHandler.validate(
                 new UsernamePasswordCredential(uid, pwd));
