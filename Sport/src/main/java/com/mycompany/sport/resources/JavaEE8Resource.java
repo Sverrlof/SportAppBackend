@@ -1,4 +1,4 @@
-package com.mycompany.hms.resources;
+package com.mycompany.sport.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

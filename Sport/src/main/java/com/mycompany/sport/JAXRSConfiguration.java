@@ -1,4 +1,4 @@
-package com.mycompany.hms;
+package com.mycompany.sport;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.hms.service;
+package com.mycompany.sport.service;
 
 /**
  *
  * @author sigur
  */
-public class HmsService {
+public class SportService {
     
 }
