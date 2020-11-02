@@ -87,23 +87,30 @@ public class SportService {
     /**
      * A path where new events can be added and stored in the database
      * 
+     * @param event
+     * @param date
+     * @param category
+     * @param description
+     * @param location
+     * @param time
+     * @return 
      */
-    /**
+    
     @POST
     @Path("add")
     @RolesAllowed({Group.USER})
     public Response addEvent(
-                @FormDataParam("event") String event,
-                @FormDataParam("description") String description,
-                @FormDataParam("category") String category,
-                @FormDataParam("date") Date date,
-                @FormDataParam("location") String location,
-                @FormDataParam("time") String time){
+                @FormParam("event") String event,
+                @FormParam("description") String description,
+                @FormParam("category") String category,
+                @FormParam("date") String date,
+                @FormParam("location") String location,
+                @FormParam("time") String time){
         
         User user = this.getCurrentUser();
         Event newEvent = new Event();
         
-       
+      
         newEvent.setEventCreator(user);
         newEvent.setEvent(event);
         newEvent.setDescription(description);
@@ -114,33 +121,33 @@ public class SportService {
         
         em.persist(newEvent);
         return Response.ok().build();
-    }*/
+    }
     /**
      * A path for users to sign up to an event. When signed up it will add the event to myeventlist
      * and add him/her-self to the attendee list
      * @param eventid
      * @return 
      */
-    /**
+    
     @PUT
     @Path("joinevent")
     @RolesAllowed({Group.USER})
-    public Response joinEvent(@QueryParam("eventID")Long eventid){
+    public Response joinEvent(@QueryParam("eventid")Long eventid){
         
         Event event = em.find(Event.class, eventid);
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
-            user.addEvent(event);
+           // user.addEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
-    }*/
+    }
     
     @DELETE
     @Path("remove")
     @RolesAllowed({Group.USER})
-    public Response delete(@QueryParam("eventID")Long eventid){
+    public Response delete(@QueryParam("eventid")Long eventid){
         Event event = em.find(Event.class, eventid);
         if(event !=null){
             User user = this.getCurrentUser();
@@ -151,7 +158,28 @@ public class SportService {
         return Response.notModified().build();
     }
     
-    
+    //----------------------USER-SPECIFIC--------------------------------------//
+    @PUT
+    @Path("leaveevent")
+    @RolesAllowed({Group.USER})
+    public Response leaveEvent(@QueryParam("eventid")Long eventid){
+        
+        Event event = em.find(Event.class, eventid);
+        if(event != null) {
+            User user = this.getCurrentUser();
+            event.removeAttender(user);
+            return Response.ok().build();
+        }
+        return Response.notModified().build();
+    }
+    /**
+    @GET
+    @Path("myevents")
+    @RolesAllowed({Group.USER})
+    public Response myEvents(@QueryParam("userid")Long userid) {
+        
+        
+    }**/
     
     /**
      * Short command to get the current user, since it's a common request

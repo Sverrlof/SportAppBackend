@@ -97,7 +97,7 @@ public class User implements Serializable {
         }
         return groups;
     }
-    
+  /*  
     public void addEvent(Event event) {
         if(myEvents == null) {
             myEvents = new ArrayList<Event>();
@@ -108,5 +108,5 @@ public class User implements Serializable {
         if(event != null){
         myEvents.remove(event);
     }
-}
+}*/
 }

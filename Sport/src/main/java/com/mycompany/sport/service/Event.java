@@ -36,12 +36,12 @@ public class Event implements Serializable {
     public static final String FIND_ALL_EVENTS = "Event.findAllEvents";
     
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long eventID;
+    private Long eventid;
     
     private String event;
     private String description;
     private String category;
-    private Date date;
+    private String date;
     private String location;
     private String time;
     
@@ -51,7 +51,7 @@ public class Event implements Serializable {
     @JoinColumn(nullable = false)
     private User eventCreator;
     
-    
+    @ManyToMany
     private List<User> eventAttenders;
     
     public void addAttender(User user){
