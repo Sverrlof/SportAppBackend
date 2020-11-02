@@ -78,7 +78,7 @@ public class User implements Serializable {
     String phoneNumber;
     @Email
     String email;
-    List<Event> myEvents;
+
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "auser_properties", joinColumns=@JoinColumn(name="userid"))
@@ -97,7 +97,14 @@ public class User implements Serializable {
         }
         return groups;
     }
-  /*  
+    
+    @ManyToMany
+    @JoinTable(name="USEREVENT",
+            joinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"),
+            inverseJoinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"))
+    List<Event> myEvents;
+    
+   
     public void addEvent(Event event) {
         if(myEvents == null) {
             myEvents = new ArrayList<Event>();
@@ -108,5 +115,5 @@ public class User implements Serializable {
         if(event != null){
         myEvents.remove(event);
     }
-}*/
+}
 }

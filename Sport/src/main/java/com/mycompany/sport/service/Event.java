@@ -59,10 +59,12 @@ public class Event implements Serializable {
             eventAttenders = new ArrayList<User>();
         }
         eventAttenders.add(user);
+        user.addEvent(this);
     }
     public void removeAttender(User user){
         if(user != null) {
             eventAttenders.remove(user);
+            user.removeEvent(this);
         }
     }
 }

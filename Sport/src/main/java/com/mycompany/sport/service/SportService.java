@@ -138,7 +138,7 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
-           // user.addEvent(event);
+            user.addEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
@@ -172,14 +172,14 @@ public class SportService {
         }
         return Response.notModified().build();
     }
-    /**
+    
     @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
-    public Response myEvents(@QueryParam("userid")Long userid) {
-        
-        
-    }**/
+    public List<Event> myEvents() {
+        User user = this.getCurrentUser();
+        return user.getMyEvents();
+    }
     
     /**
      * Short command to get the current user, since it's a common request
