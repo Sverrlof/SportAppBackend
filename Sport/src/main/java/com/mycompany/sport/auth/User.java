@@ -31,6 +31,8 @@ import lombok.NoArgsConstructor;
 import static com.mycompany.sport.auth.User.FIND_ALL_USERS;
 import static com.mycompany.sport.auth.User.FIND_USER_BY_IDS;
 import com.mycompany.sport.service.Event;
+import static com.mycompany.sport.service.Event.FIND_USER_EVENT;
+import javax.persistence.NamedNativeQuery;
 import javax.validation.constraints.Email;
 
 
@@ -43,9 +45,12 @@ import javax.validation.constraints.Email;
 @Data @AllArgsConstructor @NoArgsConstructor
 @NamedQuery(name = FIND_ALL_USERS, query = "select u from User u order by u.firstName")
 @NamedQuery(name = FIND_USER_BY_IDS, query = "select u from User u where u.userid in :ids")
+@NamedNativeQuery(name = FIND_USER_EVENT,
+        query = "select eventid from userevent where u.userid = :userid")
 public class User implements Serializable {
     public static final String FIND_USER_BY_IDS = "User.findUserByIds";
     public static final String FIND_ALL_USERS = "User.findAllUsers";
+    public static final String FIND_USER_EVENT = "User.findUserEvent";
     
     public enum State {
         ACTIVE, INACTIVE

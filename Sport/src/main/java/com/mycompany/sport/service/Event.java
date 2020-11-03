@@ -32,7 +32,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @NamedQuery(name = FIND_ALL_EVENTS,
         query = "select e from Event e")
-
+@NamedNativeQuery(name = FIND_USER_EVENT,
+        query = "select eventid from userevent where u.userid = :userid")
 public class Event implements Serializable {
     public static final String FIND_ALL_EVENTS = "Event.findAllEvents";
     public static final String FIND_USER_EVENT = "Event.findUserEvent";

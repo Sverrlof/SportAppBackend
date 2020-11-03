@@ -182,13 +182,13 @@ public class SportService {
         }
                 return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
     }
-    /*
+    
     @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
     public List<Event> myEvents() {
-        return em.createNamedQuery(Event.FIND_USER_EVENT, Event.class).getResultList();
-    }*/
+        return em.createNamedQuery(User.FIND_USER_EVENT, User.class).getResultList();
+    }
     
     /**
      * Short command to get the current user, since it's a common request
