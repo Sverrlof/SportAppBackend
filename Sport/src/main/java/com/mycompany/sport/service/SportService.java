@@ -138,7 +138,6 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
-            user.addEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
@@ -174,12 +173,22 @@ public class SportService {
     }
     
     @GET
+    @Path("eventattenders")
+    @RolesAllowed({Group.USER})
+    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
+        Event event = em.find(Event.class, eventid);
+                if(event != null) {
+           return event.getEventAttenders();
+        }
+                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
+    }
+    /*
+    @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
     public List<Event> myEvents() {
-        User user = this.getCurrentUser();
-        return user.getMyEvents();
-    }
+        return em.createNamedQuery(Event.FIND_USER_EVENT, Event.class).getResultList();
+    }*/
     
     /**
      * Short command to get the current user, since it's a common request

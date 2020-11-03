@@ -97,7 +97,7 @@ public class User implements Serializable {
         }
         return groups;
     }
-    
+    /*
     @ManyToMany
     @JoinTable(name="USEREVENT",
             joinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"),
@@ -115,5 +115,5 @@ public class User implements Serializable {
         if(event != null){
         myEvents.remove(event);
     }
-}
+}*/
 }
