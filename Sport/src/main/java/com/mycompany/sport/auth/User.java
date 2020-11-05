@@ -30,7 +30,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import static com.mycompany.sport.auth.User.FIND_ALL_USERS;
 import static com.mycompany.sport.auth.User.FIND_USER_BY_IDS;
+import com.mycompany.sport.service.Event;
+import javax.persistence.NamedNativeQuery;
 import javax.validation.constraints.Email;
+import lombok.EqualsAndHashCode;
 
 
 /**
@@ -39,7 +42,7 @@ import javax.validation.constraints.Email;
  * @author mikael
  */
 @Entity @Table(name = "AUSER")
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NamedQuery(name = FIND_ALL_USERS, query = "select u from User u order by u.firstName")
 @NamedQuery(name = FIND_USER_BY_IDS, query = "select u from User u where u.userid in :ids")
 public class User implements Serializable {
@@ -49,8 +52,7 @@ public class User implements Serializable {
     public enum State {
         ACTIVE, INACTIVE
     }
-
-    @Id
+    @Id @EqualsAndHashCode.Include
     String userid;
 
     @JsonbTransient
@@ -78,6 +80,7 @@ public class User implements Serializable {
     @Email
     String email;
 
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "auser_properties", joinColumns=@JoinColumn(name="userid"))
     @MapKeyColumn(name="key")
@@ -95,4 +98,24 @@ public class User implements Serializable {
         }
         return groups;
     }
+
+    @JsonbTransient
+    @ManyToMany
+    @JoinTable(name="USEREVENT",
+            joinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"),
+            inverseJoinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"))
+    private List<Event> myEvents;
+    
+    public void addEvent(Event event) {
+        if(myEvents == null) {
+            myEvents = new ArrayList<Event>();
+        }
+        myEvents.add(event);
+    }
+    
+    public void removeEvent(Event event) {
+        if(event != null) {
+            myEvents.remove(event);
+        }
+    }    
 }

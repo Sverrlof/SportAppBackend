@@ -62,6 +62,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
  * this EJB.
  * 
  * @author mikael
+ * @modified Sigurd
  */
 @Path("auth")
 @Stateless
