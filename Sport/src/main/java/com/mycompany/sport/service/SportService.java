@@ -167,6 +167,7 @@ public class SportService {
         if(event != null) {
             User user = this.getCurrentUser();
             event.removeAttender(user);
+            user.removeEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
@@ -186,9 +187,11 @@ public class SportService {
     @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
-    public List<Event> myEvents() {
-        return em.createNamedQuery(User.FIND_USER_EVENT, User.class).getResultList();
+    public List<Event> getEvents(@QueryParam("userid") Long userid) {
+        User user = this.getCurrentUser();
+        return user.getMyEvents();
     }
+    
     
     /**
      * Short command to get the current user, since it's a common request

@@ -7,7 +7,6 @@ package com.mycompany.sport.service;
 
 import com.mycompany.sport.auth.User;
 import static com.mycompany.sport.service.Event.FIND_ALL_EVENTS;
-import static com.mycompany.sport.service.Event.FIND_USER_EVENT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -30,16 +30,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NamedQuery(name = FIND_ALL_EVENTS,
         query = "select e from Event e")
-@NamedNativeQuery(name = FIND_USER_EVENT,
-        query = "select eventid from userevent where u.userid = :userid")
+
 public class Event implements Serializable {
     public static final String FIND_ALL_EVENTS = "Event.findAllEvents";
-    public static final String FIND_USER_EVENT = "Event.findUserEvent";
     
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) @EqualsAndHashCode.Include
     private Long eventid;
+    
     
     private String event;
     private String description;
