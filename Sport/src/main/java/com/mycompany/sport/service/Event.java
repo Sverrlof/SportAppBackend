@@ -40,13 +40,12 @@ public class Event implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) @EqualsAndHashCode.Include
     private Long eventid;
     
-    
-    private String event;
+    private String sport;
     private String description;
-    private String category;
     private String date;
     private String location;
     private String time;
+    private int maxPlayers;
     
     
     
@@ -67,7 +66,9 @@ public class Event implements Serializable {
         if(eventAttenders == null){
             eventAttenders = new ArrayList<User>();
         }
+        if(eventAttenders.size()<= maxPlayers){
         eventAttenders.add(user);
+        }
     }
     public void removeAttender(User user){
         if(user != null) {

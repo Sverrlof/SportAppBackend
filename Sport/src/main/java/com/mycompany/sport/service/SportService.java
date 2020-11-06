@@ -87,12 +87,12 @@ public class SportService {
     /**
      * A path where new events can be added and stored in the database
      * 
-     * @param event
+     * @param sport
      * @param date
-     * @param category
      * @param description
      * @param location
      * @param time
+     * @param maxPlayers
      * @return 
      */
     
@@ -100,24 +100,24 @@ public class SportService {
     @Path("add")
     @RolesAllowed({Group.USER})
     public Response addEvent(
-                @FormParam("event") String event,
+                @FormParam("sport") String sport,
                 @FormParam("description") String description,
-                @FormParam("category") String category,
                 @FormParam("date") String date,
                 @FormParam("location") String location,
-                @FormParam("time") String time){
+                @FormParam("time") String time,
+                @FormParam("maxPlayers") int maxPlayers){
         
         User user = this.getCurrentUser();
         Event newEvent = new Event();
         
       
         newEvent.setEventCreator(user);
-        newEvent.setEvent(event);
+        newEvent.setSport(sport);
         newEvent.setDescription(description);
-        newEvent.setCategory(category);
         newEvent.setDate(date);
         newEvent.setLocation(location);
         newEvent.setTime(time);
+        newEvent.setMaxPlayers(maxPlayers);
         
         em.persist(newEvent);
         return Response.ok().build();
@@ -156,6 +156,16 @@ public class SportService {
         }
         return Response.notModified().build();
     }
+    @GET
+    @Path("eventattenders")
+    @RolesAllowed({Group.USER})
+    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
+        Event event = em.find(Event.class, eventid);
+                if(event != null) {
+           return event.getEventAttenders();
+        }
+                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
+    }
     
     //----------------------USER-SPECIFIC--------------------------------------//
     @PUT
@@ -167,22 +177,11 @@ public class SportService {
         if(event != null) {
             User user = this.getCurrentUser();
             event.removeAttender(user);
-            user.removeEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
     }
     
-    @GET
-    @Path("eventattenders")
-    @RolesAllowed({Group.USER})
-    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
-        Event event = em.find(Event.class, eventid);
-                if(event != null) {
-           return event.getEventAttenders();
-        }
-                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
-    }
     
     @GET
     @Path("myevents")
