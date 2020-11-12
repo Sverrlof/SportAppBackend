@@ -295,7 +295,7 @@ public class AuthenticationService {
 
         return Response.ok().build();
     }
-
+    
     /**
      *
      * @param uid

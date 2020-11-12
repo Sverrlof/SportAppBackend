@@ -159,12 +159,11 @@ public class SportService {
     @GET
     @Path("eventattenders")
     @RolesAllowed({Group.USER})
-    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
+    public List<String> getAttenders(@QueryParam("eventid") Long eventid){
         Event event = em.find(Event.class, eventid);
-                if(event != null) {
-           return event.getEventAttenders();
-        }
-                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
+           List<User> users = event.getEventAttenders();
+           ListAdapter adapter = new ListAdapter();
+           return adapter.convertNames(users);
     }
     
     //----------------------USER-SPECIFIC--------------------------------------//
