@@ -115,5 +115,5 @@ public class User implements Serializable {
         if(event != null) {
             myEvents.remove(event);
         }
-    }    
+    }
 }
