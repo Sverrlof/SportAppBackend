@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -159,7 +160,7 @@ public class SportService {
     @GET
     @Path("eventattenders")
     @RolesAllowed({Group.USER})
-    public List<String> getAttenders(@QueryParam("eventid") Long eventid){
+    public ArrayList<String> getAttenders(@QueryParam("eventid") Long eventid){
         Event event = em.find(Event.class, eventid);
            List<User> users = event.getEventAttenders();
            ListAdapter adapter = new ListAdapter();

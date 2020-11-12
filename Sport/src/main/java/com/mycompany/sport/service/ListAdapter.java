@@ -15,10 +15,11 @@ import java.util.List;
  */
 public class ListAdapter {
     String name;
-    List<String> names;
+    Arrayist<String> names;
     
-    public List<String> convertNames(List<User> userlist) {
+    public ArrayList<String> convertNames(List<User> userlist) {
     int i;
+    
     for(i = 0; i<userlist.size(); i++)
     {
         User user = new User();
@@ -29,7 +30,6 @@ public class ListAdapter {
         names.add(name);
     }
         return names;
-    
 }
     
 }
