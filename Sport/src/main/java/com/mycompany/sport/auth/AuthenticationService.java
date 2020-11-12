@@ -39,28 +39,29 @@ import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import com.mycompany.sport.resources.DatasourceProducer;
+import javax.validation.constraints.Email;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import static org.eclipse.microprofile.jwt.Claims.email;
-
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 /**
  * Authentication REST service used for login, logout and to register new users
  *
- * @Path("auth) makes this class into a JAX-RS REST service. "auth" specifies 
+ * @Path("auth) makes this class into a JAX-RS REST service. "auth" specifies
  * that the URL of this service would begin with "domainname/chat/api/auth"
- * depending on the domain, context path of project and the JAX-RS base configuration
- * @Produces(MediaType.APPLICATION_JSON) instructs JAX-RS that the default result 
- * of a method is to be marshalled as JSON
- * 
- * @Stateless makes this class into a transactional stateless EJB, which is a 
+ * depending on the domain, context path of project and the JAX-RS base
+ * configuration
+ * @Produces(MediaType.APPLICATION_JSON) instructs JAX-RS that the default
+ * result of a method is to be marshalled as JSON
+ *
+ * @Stateless makes this class into a transactional stateless EJB, which is a
  * requirement of using the JPA EntityManager to communicate with the database.
- * 
+ *
  * @DeclareRoles({UserGroup.ADMIN,UserGroup.USER}) specifies the roles used in
  * this EJB.
- * 
+ *
  * @author mikael
  * @modified Sigurd
  */
@@ -82,16 +83,16 @@ public class AuthenticationService {
     @ConfigProperty(name = "mp.jwt.verify.issuer", defaultValue = "issuer")
     String issuer;
 
-    /** 
-     * The application server will inject a DataSource as a way to communicate 
+    /**
+     * The application server will inject a DataSource as a way to communicate
      * with the database.
      */
     @Resource(lookup = DatasourceProducer.JNDI_NAME)
     DataSource dataSource;
-    
-    /** 
-     * The application server will inject a EntityManager as a way to communicate 
-     * with the database via JPA.
+
+    /**
+     * The application server will inject a EntityManager as a way to
+     * communicate with the database via JPA.
      */
     @PersistenceContext
     EntityManager em;
@@ -164,35 +165,44 @@ public class AuthenticationService {
 
     /**
      * Does an insert into the AUSER and AUSERGROUP tables.It creates a SHA-256
- hash of the password and Base64 encodes it before the user is created in
- the database. The authentication system will read the AUSER table when
- doing an authentication.
+     * hash of the password and Base64 encodes it before the user is created in
+     * the database.The authentication system will read the AUSER table when
+     * doing an authentication.
      *
-     * @param uid
+     * @param firstName
+     * @param lastName
      * @param pwd
      * @param email
+     * @param repwd
      * @return
      */
     @POST
     @Path("create")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(@FormParam("uid") String uid, @FormParam("pwd") String pwd, @FormParam("email") String email) {
-        User user = em.find(User.class, uid);
+    public Response createUser(@FormParam("fname") String firstName, @FormParam("lname") String lastName,
+            @FormParam("email") String email, @FormParam("pwd") String pwd, @FormParam("repwd") String repwd) {
+        User user = em.find(User.class, email);
         if (user != null) {
-            log.log(Level.INFO, "user already exists {0}", uid);
+            log.log(Level.INFO, "user already exists {0}", email);
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {
             user = new User();
-            user.setEmail(email);
-            user.setUserid(uid);
-            user.setPassword(hasher.generate(pwd.toCharArray()));
-            Group usergroup = em.find(Group.class, Group.USER);
-            user.getGroups().add(usergroup);
-            return Response.ok(em.merge(user)).build();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setUserid(email);
+            if (!pwd.equals(repwd)) {
+                log.log(Level.SEVERE, "Password doesnt match!", pwd);
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            } else {
+                user.setPassword(hasher.generate(pwd.toCharArray()));
+                Group usergroup = em.find(Group.class, Group.USER);
+                user.getGroups().add(usergroup);
+            }
         }
+        return Response.ok(em.merge(user)).build();
     }
 
-    public User createUser(String uid, String pwd, String firstName, String lastName) {
+   /* public User createUser(String uid, String pwd, String firstName, String lastName) {
         User user = em.find(User.class, uid);
         if (user != null) {
             log.log(Level.INFO, "user already exists {0}", uid);
@@ -206,16 +216,15 @@ public class AuthenticationService {
             Group usergroup = em.find(Group.class, Group.USER);
             user.getGroups().add(usergroup);
             return em.merge(user);
-        }        
-    }
+        }
+    } */
 
-    
     /**
      *
      * @return
      */
     @GET
-    @Path("currentuser")    
+    @Path("currentuser")
     @RolesAllowed(value = {Group.USER})
     @Produces(MediaType.APPLICATION_JSON)
     public User getCurrentUser() {
@@ -237,7 +246,7 @@ public class AuthenticationService {
         }
 
         try (Connection c = dataSource.getConnection();
-             PreparedStatement psg = c.prepareStatement(INSERT_USERGROUP)) {
+                PreparedStatement psg = c.prepareStatement(INSERT_USERGROUP)) {
             psg.setString(1, role);
             psg.setString(2, uid);
             psg.executeUpdate();
