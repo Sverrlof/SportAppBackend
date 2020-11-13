@@ -52,6 +52,7 @@ public class User implements Serializable {
     public enum State {
         ACTIVE, INACTIVE
     }
+    @Email
     @Id @EqualsAndHashCode.Include
     String userid;
 

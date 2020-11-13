@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -102,14 +103,13 @@ public class SportService {
     public Response addEvent(
                 @FormParam("sport") String sport,
                 @FormParam("description") String description,
-                @FormParam("date") String date,
+                @FormParam("date") Date date,
                 @FormParam("location") String location,
-                @FormParam("time") String time,
+                @FormParam("time") Time time,
                 @FormParam("maxPlayers") int maxPlayers){
         
         User user = this.getCurrentUser();
         Event newEvent = new Event();
-        
       
         newEvent.setEventCreator(user);
         newEvent.setSport(sport);
@@ -122,13 +122,40 @@ public class SportService {
         em.persist(newEvent);
         return Response.ok().build();
     }
-    /**
+   
+    @DELETE
+    @Path("remove")
+    @RolesAllowed({Group.USER})
+    public Response delete(@QueryParam("eventid")Long eventid){
+        Event event = em.find(Event.class, eventid);
+        if(event !=null){
+            User user = this.getCurrentUser();
+            if(event.getEventCreator().getUserid().equals(user.getUserid()))
+                em.remove(event);
+            return Response.ok().build();
+        }
+        return Response.notModified().build();
+    }
+    
+    @GET
+    @Path("eventattenders")
+    @RolesAllowed({Group.USER})
+    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
+        Event event = em.find(Event.class, eventid);
+                if(event != null) {
+           return event.getEventAttenders();
+        }
+                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
+    }
+    
+    //----------------------USER-SPECIFIC--------------------------------------//
+   
+     /**
      * A path for users to sign up to an event. When signed up it will add the event to myeventlist
      * and add him/her-self to the attendee list
      * @param eventid
      * @return 
      */
-    
     @PUT
     @Path("joinevent")
     @RolesAllowed({Group.USER})
@@ -143,33 +170,9 @@ public class SportService {
         return Response.notModified().build();
     }
     
-    @DELETE
-    @Path("remove")
-    @RolesAllowed({Group.USER})
-    public Response delete(@QueryParam("eventid")Long eventid){
-        Event event = em.find(Event.class, eventid);
-        if(event !=null){
-            User user = this.getCurrentUser();
-            if(event.getEventCreator().getUserid().equals(user.getUserid()))
-                em.remove(event);
-            return Response.ok().build();
-        }
-        return Response.notModified().build();
-    }
-    @GET
-    @Path("eventattenders")
-    @RolesAllowed({Group.USER})
-    public List<User> getAttenders(@QueryParam("eventid") Long eventid){
-        Event event = em.find(Event.class, eventid);
-                if(event != null) {
-           return event.getEventAttenders();
-        }
-                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
-    }
     
-    //----------------------USER-SPECIFIC--------------------------------------//
     @PUT
-    @Path("leaveevent")
+    @Path("leave")
     @RolesAllowed({Group.USER})
     public Response leaveEvent(@QueryParam("eventid")Long eventid){
         

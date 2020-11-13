@@ -180,7 +180,7 @@ public class AuthenticationService {
     @Path("create")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(@FormParam("fname") String firstName, @FormParam("lname") String lastName,
-            @FormParam("email") String email, @FormParam("pwd") String pwd, @FormParam("repwd") String repwd) {
+            @FormParam("email")@Email String email, @FormParam("pwd") String pwd) {
         User user = em.find(User.class, email);
         if (user != null) {
             log.log(Level.INFO, "user already exists {0}", email);
@@ -190,15 +190,10 @@ public class AuthenticationService {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setUserid(email);
-            if (!pwd.equals(repwd)) {
-                log.log(Level.SEVERE, "Password doesnt match!", pwd);
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            } else {
                 user.setPassword(hasher.generate(pwd.toCharArray()));
                 Group usergroup = em.find(Group.class, Group.USER);
                 user.getGroups().add(usergroup);
             }
-        }
         return Response.ok(em.merge(user)).build();
     }
 
