@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class ListAdapter {
     String name;
-    Arrayist<String> names;
+    ArrayList<String> names;
     
     public ArrayList<String> convertNames(List<User> userlist) {
     int i;

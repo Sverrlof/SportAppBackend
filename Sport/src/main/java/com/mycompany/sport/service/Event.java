@@ -58,7 +58,7 @@ public class Event implements Serializable {
     @JoinTable(name="USEREVENT",
             joinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"),
             inverseJoinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"))
-    private List<User> eventAttenders;
+    public List<User> eventAttenders;
     
     
     

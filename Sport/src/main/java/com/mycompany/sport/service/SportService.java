@@ -162,10 +162,13 @@ public class SportService {
     @RolesAllowed({Group.USER})
     public ArrayList<String> getAttenders(@QueryParam("eventid") Long eventid){
         Event event = em.find(Event.class, eventid);
+        if(event.eventAttenders != null) {
            List<User> users = event.getEventAttenders();
            ListAdapter adapter = new ListAdapter();
            return adapter.convertNames(users);
-    }
+        }
+        return Exception;
+    } 
     
     //----------------------USER-SPECIFIC--------------------------------------//
     @PUT
