@@ -232,21 +232,6 @@ public class AuthenticationService {
     }
     
     /**
-     * Returns User specific profile, with firstname, lastname abd userid(email)
-     * @return 
-     */
-    @GET
-    @Path("myprofile")
-    @RolesAllowed({Group.USER})
-    public Response getMyProfile(){
-        User user = this.getCurrentUser();
-        user.getFirstName();
-        user.getLastName();
-        user.getUserid();
-        return Response.ok(user).build();
-    }
-
-    /**
      *
      * @param uid
      * @param role
