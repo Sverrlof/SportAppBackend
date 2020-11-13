@@ -9,6 +9,7 @@ import com.mycompany.sport.auth.User;
 import static com.mycompany.sport.service.Event.FIND_ALL_EVENTS;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +43,9 @@ public class Event implements Serializable {
     
     private String sport;
     private String description;
-    private String date;
+    private Date date;
     private String location;
-    private String time;
+    private Time time;
     private int maxPlayers;
     
     
@@ -59,7 +60,6 @@ public class Event implements Serializable {
             joinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"),
             inverseJoinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"))
     private List<User> eventAttenders;
-    
     
     
     public void addAttender(User user){
