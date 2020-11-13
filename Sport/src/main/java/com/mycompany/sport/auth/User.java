@@ -74,11 +74,9 @@ public class User implements Serializable {
     List<Group> groups;
 
     String firstName;
-    String middleName;
     String lastName;
-    String phoneNumber;
-    @Email
-    String email;
+    //@Email
+    //String email;
 
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -117,5 +115,5 @@ public class User implements Serializable {
         if(event != null) {
             myEvents.remove(event);
         }
-    }    
+    }
 }
