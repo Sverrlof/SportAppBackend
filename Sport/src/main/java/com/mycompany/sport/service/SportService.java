@@ -103,9 +103,9 @@ public class SportService {
     public Response addEvent(
                 @FormParam("sport") String sport,
                 @FormParam("description") String description,
-                @FormParam("date") Date date,
+                @FormParam("date") String date,
                 @FormParam("location") String location,
-                @FormParam("time") Time time,
+                @FormParam("time") String time,
                 @FormParam("maxPlayers") int maxPlayers){
         
         User user = this.getCurrentUser();

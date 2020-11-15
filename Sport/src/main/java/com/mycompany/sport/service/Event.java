@@ -43,9 +43,9 @@ public class Event implements Serializable {
     
     private String sport;
     private String description;
-    private Date date;
+    private String date;
     private String location;
-    private Time time;
+    private String time;
     private int maxPlayers;
     
     
