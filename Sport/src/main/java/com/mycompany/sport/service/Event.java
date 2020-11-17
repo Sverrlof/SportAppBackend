@@ -47,6 +47,7 @@ public class Event implements Serializable {
     private String location;
     private String time;
     private int maxPlayers;
+    private String latLng;
     
     
     

@@ -94,6 +94,7 @@ public class SportService {
      * @param location
      * @param time
      * @param maxPlayers
+     * @param latLng
      * @return 
      */
     
@@ -106,7 +107,8 @@ public class SportService {
                 @FormParam("date") String date,
                 @FormParam("location") String location,
                 @FormParam("time") String time,
-                @FormParam("maxPlayers") int maxPlayers){
+                @FormParam("maxPlayers") int maxPlayers,
+                @FormParam("latLng") String latLng){
         
         User user = this.getCurrentUser();
         Event newEvent = new Event();
@@ -118,6 +120,7 @@ public class SportService {
         newEvent.setLocation(location);
         newEvent.setTime(time);
         newEvent.setMaxPlayers(maxPlayers);
+        newEvent.setLatLng(latLng);
         
         em.persist(newEvent);
         return Response.ok().build();
