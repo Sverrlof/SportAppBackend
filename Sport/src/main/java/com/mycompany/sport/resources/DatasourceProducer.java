@@ -18,7 +18,7 @@ import static com.mycompany.sport.resources.DatasourceProducer.JNDI_NAME;
     className = "org.postgresql.xa.PGXADataSource",
     url = "jdbc:postgresql://localhost:5432/postgres")
 public class DatasourceProducer {
-    public static final String JNDI_NAME =  "java:app/jdbc/postgres";
+    public static final String JNDI_NAME =  "jdbc/postgres";
 
     @Resource(lookup=JNDI_NAME)
     DataSource ds;
