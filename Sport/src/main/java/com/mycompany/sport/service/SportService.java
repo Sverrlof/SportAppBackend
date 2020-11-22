@@ -148,14 +148,9 @@ public class SportService {
     @RolesAllowed({Group.USER})
     public List<User> getAttenders(@QueryParam("eventid") Long eventid){
         Event event = em.find(Event.class, eventid);
-                if(event != null) {
            return event.getEventAttenders();
         }
-                //This will return a list of all users if the event = null:
-                //It's impossible to get to that call if you're not in an event
-                //@TODO Check if we can just return an empty list instead, but its currently working
-                return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
-    }
+
     
     //----------------------USER-SPECIFIC--------------------------------------//
    
