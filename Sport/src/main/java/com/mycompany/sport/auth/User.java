@@ -31,7 +31,6 @@ import lombok.NoArgsConstructor;
 import static com.mycompany.sport.auth.User.FIND_ALL_USERS;
 import static com.mycompany.sport.auth.User.FIND_USER_BY_IDS;
 import com.mycompany.sport.service.Event;
-import javax.persistence.NamedNativeQuery;
 import javax.validation.constraints.Email;
 import lombok.EqualsAndHashCode;
 

@@ -9,9 +9,7 @@ import com.mycompany.sport.auth.User;
 import static com.mycompany.sport.service.Event.FIND_ALL_EVENTS;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 //if util.date doesnt work try sql.Date instead? @TODO remove this if it works.
 import javax.json.bind.annotation.JsonbTypeAdapter;
