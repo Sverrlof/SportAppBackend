@@ -103,13 +103,21 @@ public class User implements Serializable {
     @JoinTable(name="USEREVENT",
             joinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"),
             inverseJoinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"))
-    private List<Event> myEvents;
+    private List<Event> myEvents = new ArrayList<Event>();
     
     public void addEvent(Event event) {
         if(myEvents == null) {
             myEvents = new ArrayList<Event>();
         }
         myEvents.add(event);
+    }
+    
+    public boolean hasEvents() {
+        boolean hasevents = false;
+        if(!this.myEvents.isEmpty()){
+             hasevents = true;
+        }
+           return hasevents;
     }
     
     public void removeEvent(Event event) {

@@ -39,8 +39,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.StreamingOutput;
 import net.coobird.thumbnailator.Thumbnails;
@@ -148,6 +148,9 @@ public class SportService {
                 if(event != null) {
            return event.getEventAttenders();
         }
+                //This will return a list of all users if the event = null:
+                //It's impossible to get to that call if you're not in an event
+                //@TODO Check if we can just return an empty list instead, but its currently working
                 return em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList();
     }
     
