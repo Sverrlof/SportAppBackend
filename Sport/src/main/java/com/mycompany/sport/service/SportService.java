@@ -9,46 +9,23 @@ package com.mycompany.sport.service;
 import com.mycompany.sport.auth.AuthenticationService;
 import com.mycompany.sport.auth.Group;
 import com.mycompany.sport.auth.User;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.StreamingOutput;
-import net.coobird.thumbnailator.Thumbnails;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.glassfish.jersey.media.multipart.ContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 
 
 /**
@@ -70,8 +47,6 @@ public class SportService {
     @PersistenceContext
     EntityManager em;
     
-    @Inject
-    MailService mailService;
     
     /**
      * Lists all events
@@ -169,8 +144,6 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
-            mailService.sendEmail(user.getUserid(), "Attending event", "You have joined an event! " + event.getSport() +
-                    " " + "Date: " + event.getDate() + " " + "Time: " + event.getTime());
             return Response.ok().build();
         }
         return Response.notModified().build();

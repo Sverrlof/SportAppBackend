@@ -39,6 +39,7 @@ import javax.annotation.Resource;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import com.mycompany.sport.resources.DatasourceProducer;
+import com.mycompany.sport.service.MailService;
 import javax.validation.constraints.Email;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -102,6 +103,9 @@ public class AuthenticationService {
 
     @Inject
     JsonWebToken principal;
+
+    @Inject
+    MailService mailService;
 
     /**
      *
@@ -180,7 +184,7 @@ public class AuthenticationService {
     @Path("create")
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(@FormParam("fname") String firstName, @FormParam("lname") String lastName,
-            @FormParam("email")@Email String email, @FormParam("pwd") String pwd) {
+            @FormParam("email") @Email String email, @FormParam("pwd") String pwd) {
         User user = em.find(User.class, email);
         if (user != null) {
             log.log(Level.INFO, "user already exists {0}", email);
@@ -190,14 +194,16 @@ public class AuthenticationService {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setUserid(email);
-                user.setPassword(hasher.generate(pwd.toCharArray()));
-                Group usergroup = em.find(Group.class, Group.USER);
-                user.getGroups().add(usergroup);
-            }
+            user.setPassword(hasher.generate(pwd.toCharArray()));
+            Group usergroup = em.find(Group.class, Group.USER);
+            user.getGroups().add(usergroup);
+            mailService.sendEmail(user.getUserid(), "Account Created!", "Welcome to the sport app, " + user.getFirstName() +
+                    " " + user.getLastName() + "\nWe hope you get to use the app alot! \nBest regards, the Sportsapp team" );
+        }
         return Response.ok(em.merge(user)).build();
     }
 
-   /* public User createUser(String uid, String pwd, String firstName, String lastName) {
+    /* public User createUser(String uid, String pwd, String firstName, String lastName) {
         User user = em.find(User.class, uid);
         if (user != null) {
             log.log(Level.INFO, "user already exists {0}", uid);
@@ -213,7 +219,6 @@ public class AuthenticationService {
             return em.merge(user);
         }
     } */
-
     /**
      *
      * @return
@@ -225,7 +230,7 @@ public class AuthenticationService {
     public User getCurrentUser() {
         return em.find(User.class, principal.getName());
     }
-    
+
     /**
      *
      * @param uid
