@@ -123,6 +123,7 @@ public class SportService {
         newEvent.setLatLng(latLng);
         
         em.persist(newEvent);
+        user.addEvent(newEvent);
         return Response.ok().build();
     }
    
@@ -195,7 +196,7 @@ public class SportService {
     @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
-    public List<Event> getEvents(@QueryParam("userid") Long userid) {
+    public List<Event> getEvents(@QueryParam("uid") String userid) {
         User user = this.getCurrentUser();
         return user.getMyEvents();
     }
