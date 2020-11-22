@@ -70,8 +70,8 @@ public class SportService {
     @PersistenceContext
     EntityManager em;
     
-   // @Inject
-   // MailService mailService;
+    @Inject
+    MailService mailService;
     
     /**
      * Lists all events
@@ -169,6 +169,8 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
+            mailService.sendEmail(user.getUserid(), "Attending event", "You have joined an event! " + event.getSport() +
+                    " " + "Date: " + event.getDate() + " " + "Time: " + event.getTime());
             return Response.ok().build();
         }
         return Response.notModified().build();
