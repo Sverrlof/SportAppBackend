@@ -125,6 +125,14 @@ public class SportService {
         Event event = em.find(Event.class, eventid);
            return event.getEventAttenders();
         }
+    
+    @GET
+    @Path("size")
+    public int getSize(@QueryParam("eventid") Long eventid){
+        Event event = em.find(Event.class, eventid);
+        int size = event.eventAttenders.size();
+        return size;
+    }
 
     
     //----------------------USER-SPECIFIC--------------------------------------//
