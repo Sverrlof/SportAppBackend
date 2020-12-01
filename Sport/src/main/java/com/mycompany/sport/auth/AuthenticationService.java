@@ -40,6 +40,9 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import com.mycompany.sport.resources.DatasourceProducer;
 import com.mycompany.sport.service.MailService;
+import java.security.SecureRandom;
+import java.util.List;
+import javax.servlet.annotation.WebServlet;
 import javax.validation.constraints.Email;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -197,8 +200,8 @@ public class AuthenticationService {
             user.setPassword(hasher.generate(pwd.toCharArray()));
             Group usergroup = em.find(Group.class, Group.USER);
             user.getGroups().add(usergroup);
-            mailService.sendEmail(user.getUserid(), "Account Created!", "Welcome to the sport app, " + user.getFirstName() +
-                    " " + user.getLastName() + "\nWe hope you get to use the app alot! \nBest regards, the Sportsapp team" );
+            mailService.sendEmail(user.getUserid(), "Account Created!", "Welcome to the sport app, " + user.getFirstName()
+                    + " " + user.getLastName() + "\nWe hope you get to use the app alot! \nBest regards, the Sportsapp team");
         }
         return Response.ok(em.merge(user)).build();
     }
@@ -336,4 +339,34 @@ public class AuthenticationService {
             return Response.ok().build();
         }
     }
+
+    @POST
+    @Path("resetpassword")
+    public void resetPassword(@QueryParam("uid") String userid) {
+        int length = 6;
+        User user = em.find(User.class, userid);
+        if (user != null) {
+            String newPassword = generateNewPassword(length);
+            user.setPassword(newPassword);
+            mailService.sendEmail(userid, "Reset Password Request", "You have requested a password reset. \nYour new password is: \n" + newPassword);
+        }
+    }
+
+    public static String generateNewPassword(int len) {
+
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        // provides a cryptographically strong random number generator (RNG).
+        SecureRandom random = new SecureRandom();
+
+        // A mutable sequence of characters.
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < len; i++) {
+            int randIndex = random.nextInt(chars.length());
+            stringBuilder.append(chars.charAt(randIndex));
+        }
+
+        return stringBuilder.toString();
+    }
+
 }
