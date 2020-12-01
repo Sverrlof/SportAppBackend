@@ -96,9 +96,9 @@ public class SportService {
         newEvent.setTime(time);
         newEvent.setMaxPlayers(maxPlayers);
         newEvent.setLatLng(latLng);
+        newEvent.addAttender(user);
         
         em.persist(newEvent);
-        user.addEvent(newEvent);
         return Response.ok().build();
         //mailService.sendEmail(em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList()).getEmail ? 
         //wi
