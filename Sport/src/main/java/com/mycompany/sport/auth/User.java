@@ -99,10 +99,10 @@ public class User implements Serializable {
 
     @JsonbTransient
     @ManyToMany
-    @JoinTable(name="USEREVENT",
+    @JoinTable(name="MYUSEREVENT",
             joinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"),
             inverseJoinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"))
-    private List<Event> myEvents = new ArrayList<Event>();
+    private List<Event> myEvents;
     
     public void addEvent(Event event) {
         if(myEvents == null) {
@@ -111,13 +111,6 @@ public class User implements Serializable {
         myEvents.add(event);
     }
     
-    public boolean hasEvents() {
-        boolean hasevents = false;
-        if(!this.myEvents.isEmpty()){
-             hasevents = true;
-        }
-           return hasevents;
-    }
     
     public void removeEvent(Event event) {
         if(event != null) {

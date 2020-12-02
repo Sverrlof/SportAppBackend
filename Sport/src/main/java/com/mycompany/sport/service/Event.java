@@ -58,7 +58,7 @@ public class Event implements Serializable {
     @JoinTable(name="USEREVENT",
             joinColumns = @JoinColumn(name="eventid", referencedColumnName = "eventid"),
             inverseJoinColumns = @JoinColumn(name="userid", referencedColumnName = "userid"))
-    public List<User> eventAttenders =  new ArrayList<>();
+    public List<User> eventAttenders;
     
     
     public void addAttender(User user){
@@ -67,11 +67,13 @@ public class Event implements Serializable {
         }
         if(eventAttenders.size()<= maxPlayers){
         eventAttenders.add(user);
+        user.addEvent(this);
         }
     }
     public void removeAttender(User user){
         if(user != null) {
             eventAttenders.remove(user);
+            user.removeEvent(this);
         }
     }
 }

@@ -9,6 +9,7 @@ package com.mycompany.sport.service;
 import com.mycompany.sport.auth.AuthenticationService;
 import com.mycompany.sport.auth.Group;
 import com.mycompany.sport.auth.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
@@ -97,6 +98,8 @@ public class SportService {
         newEvent.setMaxPlayers(maxPlayers);
         newEvent.setLatLng(latLng);
         
+        newEvent.addAttender(user);
+        
         em.persist(newEvent);
         return Response.ok().build();
         //mailService.sendEmail(em.createNamedQuery(User.FIND_ALL_USERS, User.class).getResultList()).getEmail ? 
@@ -111,6 +114,8 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             if(event.getEventCreator().getUserid().equals(user.getUserid()))
+                user.removeEvent(event);
+                event.eventAttenders.clear();
                 em.remove(event);
             return Response.ok().build();
         }
@@ -122,7 +127,12 @@ public class SportService {
     @RolesAllowed({Group.USER})
     public List<User> getAttenders(@QueryParam("eventid") Long eventid){
         Event event = em.find(Event.class, eventid);
+        if(event.getEventAttenders() != null) {
            return event.getEventAttenders();
+        }else {
+            List<User> users = new ArrayList<>();
+            return users;
+        }
         }
     
     @GET
@@ -152,6 +162,7 @@ public class SportService {
             User user = this.getCurrentUser();
             event.addAttender(user);
             return Response.ok().build();
+            
         }
         return Response.notModified().build();
     }
@@ -175,9 +186,14 @@ public class SportService {
     @GET
     @Path("myevents")
     @RolesAllowed({Group.USER})
-    public List<Event> getEvents(@QueryParam("uid") String userid) {
+    public List<Event> getEvents(@QueryParam("userid") String userid) {
         User user = this.getCurrentUser();
-        return user.getMyEvents();
+        if(user.getMyEvents() != null) {
+          return user.getMyEvents();  
+        }else{
+           List<Event> events = new ArrayList<>();
+            return events;
+        }
     }
     
     
