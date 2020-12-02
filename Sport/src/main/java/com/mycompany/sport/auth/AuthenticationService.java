@@ -342,14 +342,17 @@ public class AuthenticationService {
 
     @GET
     @Path("resetpassword")
-    public void resetPassword(@QueryParam("uid") String userid) {
+    public Response resetPassword(@QueryParam("uid") String userid) {
         int length = 10;
         User user = em.find(User.class, userid);
         if (user != null) {
             String newPassword = generateNewPassword(length);
             user.setPassword(hasher.generate(newPassword.toCharArray()));
-            mailService.sendEmail(userid, "Reset Password Request", "You have requested a password reset. \nYour new password is: \n" + newPassword + "\nIt is highly recommended to change your password after logging in. You can do this by going to your profile in the navigationbar.");
+            mailService.sendEmail(userid, "Reset Password Request", "You have requested a password reset. \nYour new password is: \n"
+                    + newPassword + "\nIt is highly recommended to change your password after logging in. You can do this by going to your profile in the navigationbar.");
+            return Response.ok().build();
         }
+        return Response.notModified().build();
     }
 
     public static String generateNewPassword(int len) {
