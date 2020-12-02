@@ -152,6 +152,7 @@ public class SportService {
         if(event !=null){
             User user = this.getCurrentUser();
             event.addAttender(user);
+            user.addEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
@@ -167,6 +168,7 @@ public class SportService {
         if(event != null) {
             User user = this.getCurrentUser();
             event.removeAttender(user);
+            user.removeEvent(event);
             return Response.ok().build();
         }
         return Response.notModified().build();
